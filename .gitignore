@@ -11,3 +11,4 @@ _build
 
 .idea
 .DS_Store
+protoc-gen-2tars

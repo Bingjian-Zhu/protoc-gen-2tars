@@ -3,12 +3,12 @@ package main
 import (
 	"fmt"
 	"github.com/TarsCloud/TarsGo/tars"
-	"protoc-gen-2tars/pb"
+	"protoc-gen-2tars/example/pb"
 )
 
 func main() {
 	comm := tars.NewCommunicator()
-	obj := fmt.Sprintf("StressTest.HelloPbServer.GreeterTestObj@tcp -h 127.0.0.1  -p 10014  -t 60000")
+	obj := fmt.Sprintf("StressTest.HelloPbServer.GreeterTestObj@tcp -h 127.0.0.1  -p 10015  -t 60000")
 	app := new(pb.Greeter)
 	comm.StringToProxy(obj, app)
 	input := pb.HelloRequest{Name: "sandyskies"}

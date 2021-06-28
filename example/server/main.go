@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/TarsCloud/TarsGo/tars"
-	"protoc-gen-2tars/pb"
+	"protoc-gen-2tars/example/pb"
 )
 
 type GreeterImp struct {
