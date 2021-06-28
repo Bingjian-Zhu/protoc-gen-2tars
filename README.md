@@ -12,7 +12,9 @@ go get github.com/bingjian-zhu/protoc-gen-2tars@master
 - [protoc-gen-go](https://github.com/golang/protobuf)
 
 go get -u github.com/golang/protobuf/proto@v1.3.5
+
 go get -u github.com/golang/protobuf/protoc-gen-go@v1.3.5
+
 注意：要选v1.3.5
 
 ```
