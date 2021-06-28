@@ -8,8 +8,9 @@ import (
 type GreeterImp struct {
 }
 
-func (imp *GreeterImp) SayHello(input pb.HelloRequest) (output pb.HelloReply, err error) {
-	output.Message = "hello" + input.GetName()
+func (imp *GreeterImp) SayHello(input *pb.HelloRequest) (*pb.HelloReply, error) {
+	output := new(pb.HelloReply)
+	output.Message = "hello" + input.Name
 	return output, nil
 }
 

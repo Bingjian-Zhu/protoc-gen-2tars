@@ -111,9 +111,7 @@ func init() {
 	proto.RegisterType((*HelloReply)(nil), "pb.HelloReply")
 }
 
-func init() {
-	proto.RegisterFile("helloworld.proto", fileDescriptor_17b8c58d586b62f2)
-}
+func init() { proto.RegisterFile("helloworld.proto", fileDescriptor_17b8c58d586b62f2) }
 
 var fileDescriptor_17b8c58d586b62f2 = []byte{
 	// 142 bytes of a gzipped FileDescriptorProto
@@ -160,26 +158,29 @@ func (obj *Greeter) TarsSetProtocol(p model.Protocol) {
 }
 
 type impGreeter interface {
-	SayHello(input HelloRequest) (output HelloReply, err error)
+	SayHello(input *HelloRequest) (*HelloReply, error)
 }
 
 type impGreeterWithContext interface {
-	SayHello(ctx context.Context, input HelloRequest) (output HelloReply, err error)
+	SayHello(ctx context.Context, input *HelloRequest) (*HelloReply, error)
 }
 
 //Dispatch is used to call the user implement of the defined method.
-func (obj *Greeter) Dispatch(ctx context.Context, val interface{}, req *requestf.RequestPacket, resp *requestf.ResponsePacket, withContext bool) (err error) {
+func (obj *Greeter) Dispatch(ctx context.Context, val interface{}, req *requestf.RequestPacket, resp *requestf.ResponsePacket, withContext bool) error {
 	input := tools.Int8ToByte(req.SBuffer)
-	var output []byte
+	var (
+		output []byte
+		err    error
+	)
 	funcName := req.SFuncName
 	switch funcName {
 
 	case "SayHello":
-		inputDefine := HelloRequest{}
-		if err = proto.Unmarshal(input, &inputDefine); err != nil {
+		inputDefine := &HelloRequest{}
+		if err = proto.Unmarshal(input, inputDefine); err != nil {
 			return err
 		}
-		var res HelloReply
+		var res *HelloReply
 		if withContext == false {
 			imp := val.(impGreeter)
 			res, err = imp.SayHello(inputDefine)
@@ -193,7 +194,7 @@ func (obj *Greeter) Dispatch(ctx context.Context, val interface{}, req *requestf
 				return err
 			}
 		}
-		output, err = proto.Marshal(&res)
+		output, err = proto.Marshal(res)
 		if err != nil {
 			return err
 		}
@@ -226,15 +227,16 @@ func (obj *Greeter) Dispatch(ctx context.Context, val interface{}, req *requestf
 }
 
 // SayHello is client rpc method as defined
-func (obj *Greeter) SayHello(input HelloRequest, _opt ...map[string]string) (output HelloReply, err error) {
+func (obj *Greeter) SayHello(input *HelloRequest, _opt ...map[string]string) (*HelloReply, error) {
 	ctx := context.Background()
 	return obj.SayHelloWithContext(ctx, input, _opt...)
 }
 
 // SayHelloWithContext is client rpc method as defined
-func (obj *Greeter) SayHelloWithContext(ctx context.Context, input HelloRequest, _opt ...map[string]string) (output HelloReply, err error) {
+func (obj *Greeter) SayHelloWithContext(ctx context.Context, input *HelloRequest, _opt ...map[string]string) (*HelloReply, error) {
 	var inputMarshal []byte
-	inputMarshal, err = proto.Marshal(&input)
+	output := new(HelloReply)
+	inputMarshal, err := proto.Marshal(input)
 	if err != nil {
 		return output, err
 	}
@@ -254,7 +256,7 @@ func (obj *Greeter) SayHelloWithContext(ctx context.Context, input HelloRequest,
 	if err != nil {
 		return output, err
 	}
-	if err = proto.Unmarshal(tools.Int8ToByte(resp.SBuffer), &output); err != nil {
+	if err = proto.Unmarshal(tools.Int8ToByte(resp.SBuffer), output); err != nil {
 		return output, err
 	}
 
