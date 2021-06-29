@@ -3,7 +3,7 @@
 ## 安装
 
 ```
-go get github.com/bingjian-zhu/protoc-gen-2tars@master
+go get github.com/bingjian-zhu/protoc-gen-2tars@v0.1.0
 ```
 
 依赖：
